@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,28 +56,34 @@ public class AuthenticationController {
 
 	@PostMapping(value = "/signin")
 	public ResponseEntity<?> verify(@RequestBody SignInRequestBody requestBody) {
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(requestBody.getUsername(), requestBody.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();   
-		List<String> roles = userDetails.getAuthorities().stream().map(authority->authority.getAuthority()).collect(Collectors.toList());
 		
-		return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getUsername(),userDetails.getEmail(),roles));
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(requestBody.getUsername(), requestBody.getPassword()));
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			String jwt = jwtUtils.generateJwtToken(authentication);
+			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();   
+			List<String> roles = userDetails.getAuthorities().stream().map(authority->authority.getAuthority()).collect(Collectors.toList());
+			
+			return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getUsername(),userDetails.getEmail(),roles));
+			
+		}catch(BadCredentialsException exception) {
+			return ResponseEntity.status(401).body("Invalid Credentials");
+		}
 	}
 
 	@PostMapping(value = "/signup", produces = "application/json")
 	public ResponseEntity<?> register(@RequestBody SignUpRequestBody requestBody) {
 		if (userRepository.existsByUsername(requestBody.getUsername())) {
 		      return ResponseEntity
-		          .badRequest()
-		          .body(new MessageResponse("Error: Username is already taken!"));
+		          .status(401)
+		          .body(new MessageResponse("Username is already taken!"));
 		    }
 
 		    if (userRepository.existsByEmail(requestBody.getEmail())) {
 		      return ResponseEntity
-		          .badRequest()
-		          .body(new MessageResponse("Error: Email is already in use!"));
+		    	  .status(401)
+		          .body(new MessageResponse("Email is already in use!"));
 		    }
 
 		    // Create new user's account
