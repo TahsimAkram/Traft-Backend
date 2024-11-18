@@ -1,4 +1,4 @@
-package com.taskmanager.model;
+package com.taskmanager.Entity;
 
 import java.sql.Timestamp;
 import java.util.Set;
