@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "task")
 public class Task {
+	@JsonProperty("id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -28,6 +29,7 @@ public class Task {
 	@JsonProperty("description")
 	private String description;
 	
+	@JsonProperty("time")
 	private String time;
 	
 	@JsonProperty("priority")
