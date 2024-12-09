@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.taskmanager.model.User;
+import com.taskmanager.Entity.User;
 import com.taskmanager.repository.UserRepository;
 
 @Component

@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.taskmanager.model.User;
+import com.taskmanager.Entity.User;
 
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;

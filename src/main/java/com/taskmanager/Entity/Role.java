@@ -1,4 +1,6 @@
-package com.taskmanager.model;
+package com.taskmanager.Entity;
+
+import com.taskmanager.model.ERole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

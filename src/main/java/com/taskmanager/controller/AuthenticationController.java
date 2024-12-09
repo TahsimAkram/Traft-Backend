@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.taskmanager.Entity.Role;
+import com.taskmanager.Entity.User;
 import com.taskmanager.jwt.JwtUtils;
 import com.taskmanager.model.ERole;
 import com.taskmanager.model.JwtResponse;
 import com.taskmanager.model.MessageResponse;
-import com.taskmanager.model.Role;
 import com.taskmanager.model.SignInRequestBody;
 import com.taskmanager.model.SignUpRequestBody;
-import com.taskmanager.model.User;
 import com.taskmanager.repository.RoleRepository;
 import com.taskmanager.repository.UserRepository;
 import com.taskmanager.service.UserDetailsImpl;
